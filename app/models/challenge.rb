@@ -22,4 +22,11 @@ class Challenge
     state.in? [:created, :accepted, :challenged]
   end
 
+  # static methods
+  def self.with_participation_of(user)
+    criteria = any_of({challenging_player: user}, {challenged_player: user})
+    criteria = criteria.any_of({state: :created}, {state: :accepted}, {state: :challenged})
+    criteria
+  end
+
 end

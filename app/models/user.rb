@@ -53,8 +53,7 @@ class User
   end
 
   def can_challenge?(user)
-    challengeables.include? user.rank
-    Challenge.where(active: true)
+    challengeables.include?(user.rank) && (Challenge.with_participation_of(self).size < 1)
   end
 
   def challengeables

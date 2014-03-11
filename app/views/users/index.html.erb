@@ -3,6 +3,12 @@
   <% @users.each do |user| %>
     <li>
       <%= link_to user.name, user %>
+      <% if current_user.can_challenge?(user) %>
+        Foo
+        <%= link_to "challenge", challenge_user_path(user) %>
+      <% else %>
+        Bar
+      <% end %> 
     </li>
   <% end %>
 </ol>
