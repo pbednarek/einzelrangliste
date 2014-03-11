@@ -42,10 +42,24 @@ class User
   field :admin, type: Boolean, default: false
   field :active, type: Boolean, default: true
 
-  has_many :own_challenges, class_name: 'Challenge'
-  has_many :foreign_challenges, class_name: 'Challenge'
+  has_many :own_challenges, class_name: 'Challenge', inverse_of: :challenging_player
+  has_many :foreign_challenges, class_name: 'Challenge', inverse_of: :challenged_player
+
+  validates_presence_of :name
+  before_create :set_rank
 
   def admin?
     admin
   end
+
+  protected
+  def set_rank
+    user = User.all.desc(:rank).first
+    unless user.nil?
+      self.rank = user.rank+1
+    else
+      self.rank = 1
+    end
+  end
+
 end
