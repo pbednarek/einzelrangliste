@@ -13,19 +13,36 @@
     <p>
       Challenged Player:
       <%= @challenge.challenged_player.name %>
-      <%= f.hidden_field :challenged_player %>
-      <%= f.hidden_field :due_date %>
+      <%= f.hidden_field :challenged_player_id %>
     </p>
 
-    <p>
+
+    <fieldset>
+      <legend>Select suggested dates</legend>
       <% @challenge.suggestions.each do |suggestion| %>
-          <%= date_field_tag 'challenge[suggestions][][date]', suggestion.to_date %>
-          <%= text_field_tag 'challenge[suggestions][][time]', suggestion.strftime("%H:%M") %>
+          <div class="row">
+            <div class="large-6 columns">
+              <label>Date
+                <%= date_field_tag 'challenge[suggestions][][date]', suggestion.to_date %>
+              </label>
+            </div>
+            <div class="large-6 columns">
+              <label>Time
+                <%= text_field_tag 'challenge[suggestions][][time]', suggestion.strftime("%H:%M") %>
+              </label>
+            </div>
+          </div>
       <% end %>
-    </p>
+    </fieldset>
 
+    <div class="row">
+      <div class="large-12 columns">
+        <%=	 f.label :location %>
+        <%= f.text_field :location %>
+      </div>
+    </div>
 
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit class: "button" %>
     </div>
 <% end %>
