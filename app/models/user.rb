@@ -1,5 +1,6 @@
 class User
   include Mongoid::Document
+  include Mongoid::Timestamps
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -39,5 +40,12 @@ class User
   field :losses, type: Integer, default: 0
   field :rank, type: Integer
   field :admin, type: Boolean, default: false
+  field :active, type: Boolean, default: true
 
+  has_many :own_challenges, class_name: 'Challenge'
+  has_many :foreign_challenges, class_name: 'Challenge'
+
+  def admin?
+    admin
+  end
 end
