@@ -1,1 +1,31 @@
 <h3>Home</h3>
+<p>
+  <% if @challenge %>
+      <% if @challenge.challenging_player == current_user %>
+          <%= "You challenged #{@challenge.challenged_player.name}." %><br/>
+          Current state:
+          <% if @challenge.state == "created" %>
+              awaiting a response from the opponent.
+          <% elsif @challenge.state == "accepted" %>
+              the opponent chose
+              <%= @challenge.play_date %>
+              to play
+          <% elsif @challenge.state == "challenged" %>
+              the opponent wants to decline your challenge. An Admin is looking into it.
+          <% end %>
+      <% end %>
+      <% if @challenge.challenged_player == current_user %>
+          <%= "You have been challenged by #{@challenge.challenging_player.name}." %>
+          Please pick a suggested date.
+              <ul>
+              <% @challenge.suggestions.each do |suggestion| %>
+
+                   <li>
+                     <%= radio_button_tag :accepted_date, suggestion %>
+                     <%= suggestion %>
+                   </li>
+              <% end %>
+              </ul>
+      <% end %>
+  <% end %>
+</p>
