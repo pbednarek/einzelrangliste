@@ -52,6 +52,18 @@ class User
     admin
   end
 
+  def can_challenge?(user)
+    challengeables.include? user.rank
+    Challenge.where(active: true)
+  end
+
+  def challengeables
+    min_rank = rank - row + 1
+    min_rank -= 1 if rank == 3
+    max_rank = rank - 1
+    (min_rank..max_rank)
+  end
+
   protected
   def set_rank
     user = User.all.desc(:rank).first
@@ -60,6 +72,16 @@ class User
     else
       self.rank = 1
     end
+  end
+
+  def row
+    row_counter = 1
+    tri_num = 1
+    while tri_num < rank
+      row_counter += 1
+      tri_num += row_counter
+    end
+    row_counter
   end
 
 end

@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @users = User.all
+    @users = User.where(active: true).asc :rank
   end
 
   def show
