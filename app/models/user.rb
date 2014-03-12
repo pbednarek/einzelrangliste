@@ -46,7 +46,7 @@ class User
   has_many :foreign_challenges, class_name: 'Challenge', inverse_of: :challenged_player
 
   validates_presence_of :name
-  before_create :set_rank
+  before_create :set_initial_rank
 
   def admin?
     admin
@@ -63,8 +63,16 @@ class User
     (min_rank..max_rank)
   end
 
+  def update_rank_to(new_rank)
+    standings = User.all.asc(:rank)
+    for i in (new_rank-1)..(rank-2) do
+      standings[i].rank -= 1
+    end
+    rank = new_rank
+  end
+
   protected
-  def set_rank
+  def set_initial_rank
     user = User.all.desc(:rank).first
     unless user.nil?
       self.rank = user.rank+1
