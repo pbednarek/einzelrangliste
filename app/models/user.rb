@@ -64,9 +64,9 @@ class User
   end
 
   def update_rank_to(new_rank)
-    standings = User.all.asc(:rank)
-    for i in (new_rank-1)..(rank-2) do
-      standings[i].rank -= 1
+    User.all.asc(:rank)[new_rank-1..rank-2].each do |standing|
+      standing.rank -=1
+      standing.save
     end
     rank = new_rank
   end
