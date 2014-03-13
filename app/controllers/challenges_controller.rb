@@ -28,7 +28,7 @@ class ChallengesController < ApplicationController
     accepted_date = params[:accepted_date]
 
     if accepted_date < Date.now
-      redirect_to root_path, alert "Please pick a date in the future"
+      redirect_to root_path, alert: "Please pick a date in the future"
     end
 
     if c.update_attributes(play_date: accepted_date, state: 'accepted')
