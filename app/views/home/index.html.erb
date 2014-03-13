@@ -29,6 +29,12 @@
                     </ul>
                     <%= button_tag 'Accept Challenge', type: 'submit', class: 'button' %>
                 <% end %>
+                <%= form_tag(challenge_deny_path(@challenge)) do %>
+                  <label>Comment
+                    <%= text_area_tag :comment %>
+                  </label>
+                  <%= button_tag 'Deny', type: 'submit', class: 'button alert' %>
+                <% end %>
             <% elsif @challenge.state == "accepted" %>
                 You’re challenge is going to take place on <%= @challenge.play_date.to_formatted_s(:long) %>.
             <% end %>
