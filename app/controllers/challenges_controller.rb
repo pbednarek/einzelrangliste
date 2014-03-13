@@ -23,6 +23,13 @@ class ChallengesController < ApplicationController
     redirect_to root_path
   end
 
+  def accept
+    c = Challenge.find params[:id]
+    date = params[:accepted_date]
+    c.update_attributes(play_date: date, state: 'active')
+    redirect_to root_path, notice: 'Challenge accepted.'
+  end
+
   protected
   def create_date_time(date, time)
     DateTime.parse(date+" "+time+":00 +0100")
