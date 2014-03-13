@@ -24,6 +24,14 @@ class Challenge
     state.in? [:created, :accepted, :challenged]
   end
 
+  def set_winner(usr)
+    update_attributes(state: 'finished', winner: usr)
+    usr.wins += 1
+    challenged_player.equal?(usr) ? challenging_player.losses += 1 : challenged_player.losses += 1
+    challenged_player.save
+    challenging_player.save
+  end
+
   # static methods
   def self.with_participation_of(user)
     criteria = any_of({challenging_player: user}, {challenged_player: user})
