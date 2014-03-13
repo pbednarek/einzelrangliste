@@ -25,8 +25,13 @@ class ChallengesController < ApplicationController
 
   def accept
     c = Challenge.find params[:id]
+    accepted_date = params[:accepted_date]
 
-    if c.update_attributes(play_date: params[:accepted_date], state: 'accepted')
+    if accepted_date < Date.now
+      redirect_to root_path, alert: "Please pick a date in the future"
+    end
+
+    if c.update_attributes(play_date: accepted_date, state: 'accepted')
       redirect_to root_path, notice: 'Challenge accepted.'
     else
       redirect_to root_path, alert: c.errors.messages.join('; ')
