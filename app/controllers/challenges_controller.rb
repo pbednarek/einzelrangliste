@@ -32,7 +32,8 @@ class ChallengesController < ApplicationController
 
   def pick_winner
     usr = User.find params[:winner_id]
-    Challenge.fins params[:id].set_winner usr
+    c = Challenge.find params[:id]
+    c.set_winner usr
   end
 
   protected
