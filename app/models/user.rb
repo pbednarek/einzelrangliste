@@ -90,6 +90,10 @@ class User
     end
   end
 
+  def needs_comment?
+    Challenges.where(challenged_player: self).where(winner: self).any? { |chlng| (Date.today-2.days..Date.today).include? chlng.play_date }
+  end
+
   # Method to insert player to specific position e.g. after deneutralization
   def deneutralize_to(target)
     active_users = User.where(active: true)
