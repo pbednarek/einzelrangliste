@@ -19,6 +19,7 @@ class Challenge
 
   validates_presence_of :suggestions, :due_date, :location, :state, :challenging_player, :challenged_player
   validates_inclusion_of :state, in: VALID_STATES
+  validate :using_different_dates, :dates_in_next_two_weeks
 
   def active?
     state.in? [:created, :accepted, :challenged]
@@ -30,6 +31,20 @@ class Challenge
     challenged_player.equal?(usr) ? challenging_player.losses += 1 : challenged_player.losses += 1
     challenged_player.save
     challenging_player.save
+  end
+
+  # Validation Methods
+  def using_different_dates
+    if suggestions.map{ |d| d.to_date }.uniq.size < 3
+      errors.add :suggestions, "All suggestions must be on different days."
+    end
+  end
+
+  def dates_in_next_two_weeks
+    now = Time.now
+    if suggestions.any? { |s| s > now.to_date+14.days }
+      errors.add :suggestions, "Must all be within the next 14 days."
+    end
   end
 
   # static methods
