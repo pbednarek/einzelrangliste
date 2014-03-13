@@ -74,7 +74,7 @@ class User
       standing.rank -=1
       standing.save
     end
-    rank = new_rank
+    update_attribute(rank: new_rank)
   end
 
   def neutralize
