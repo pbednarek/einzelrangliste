@@ -23,14 +23,14 @@
                     <% @challenge.suggestions.each do |suggestion| %>
                        <li>
                          <%= radio_button_tag :accepted_date, suggestion %>
-                         <%= suggestion %>
+                         <%= suggestion.in_time_zone('Berlin').to_formatted_s(:long) %>
                        </li>
                     <% end %>
                     </ul>
                     <%= button_tag 'Accept Challenge', type: 'submit', class: 'button' %>
                 <% end %>
             <% elsif @challenge.state == "accepted" %>
-                You’re challenge is going to take place on <%= @challenge.play_date %>.
+                You’re challenge is going to take place on <%= @challenge.play_date.to_formatted_s(:long) %>.
             <% end %>
         <% end %>
     <% end %>

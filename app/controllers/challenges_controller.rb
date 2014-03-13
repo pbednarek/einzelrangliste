@@ -25,9 +25,12 @@ class ChallengesController < ApplicationController
 
   def accept
     c = Challenge.find params[:id]
-    date = params[:accepted_date]
-    c.update_attributes(play_date: date, state: 'active')
-    redirect_to root_path, notice: 'Challenge accepted.'
+
+    if c.update_attributes(play_date: params[:accepted_date], state: 'accepted')
+      redirect_to root_path, notice: 'Challenge accepted.'
+    else
+      redirect_to root_path, alert: c.errors.messages.join('; ')
+    end
   end
 
   def pick_winner

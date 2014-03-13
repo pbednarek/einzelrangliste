@@ -7,11 +7,11 @@ class Challenge
   belongs_to :challenging_player, inverse_of: :own_challenges, class_name: 'User', autosave: true
   belongs_to :challenged_player, inverse_of: :foreign_challenges, class_name: 'User', autosave: true
 
-  has_one :winner, class_name: 'User'
+  field :winner, type: User
 
   field :suggestions, type: Array
   field :due_date, type: Date
-  field :play_date, type: Date
+  field :play_date, type: DateTime
   field :location, type: String
   field :comment, type: String
   field :state, type: String
