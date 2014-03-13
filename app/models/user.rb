@@ -57,9 +57,14 @@ class User
   end
 
   def challengeables
-    min_rank = rank - row + 1
-    min_rank -= 1 if rank == 3
-    max_rank = rank - 1
+    if active
+      min_rank = rank - row + 1
+      min_rank -= 1 if rank == 3
+      max_rank = rank - 1
+    else
+      min_rank = rank
+      max_rank = User.where(active: true).asc.last.rank
+    end
     (min_rank..max_rank)
   end
 
@@ -69,6 +74,30 @@ class User
       standing.save
     end
     rank = new_rank
+  end
+
+  def neutralize
+    active = false
+    self.save
+
+    # Upping rank of each active player
+    active_users = User.where(active: true)
+    active_users.asc(:rank)[rank..active_users.size-1].each do |player|
+      player.rank -= 1
+      player.save
+    end
+  end
+
+  # Method to insert player to specific position e.g. after deneutralization
+  def deneutralize_to(target)
+    active_users = User.where(active: true)
+    active_users.asc(:rank)[target-1..active_users.size-1].each do |player|
+      player.rank += 1
+      player.save
+    end
+    rank = target
+    active = true
+    self.save
   end
 
   protected
