@@ -1,3 +1,5 @@
+<% needs_comment = current_user.needs_comment? %>
+
 <h3>Home</h3>
 <p>
     <% if @challenge %>
@@ -28,12 +30,17 @@
                     <% end %>
                     </ul>
                     <%= button_tag 'Accept Challenge', type: 'submit', class: 'button' %>
+                    <% unless needs_comment %>
+                        <%= link_to 'Deny', challenge_deny_path(@challenge), method: :post, class: 'button alert' %>
+                    <% end %>
                 <% end %>
-                <%= form_tag(challenge_deny_path(@challenge)) do %>
-                  <label>Comment
-                    <%= text_area_tag :comment %>
-                  </label>
-                  <%= button_tag 'Deny', type: 'submit', class: 'button alert' %>
+                <% if needs_comment %>
+                    <%= form_tag(challenge_deny_path(@challenge)) do %>
+                        <label>Comment
+                            <%= text_area_tag :comment %>
+                        </label>
+                        <%= button_tag 'Deny', type: 'submit', class: 'button alert' %>
+                    <% end %>
                 <% end %>
             <% elsif @challenge.state == "accepted" %>
                 You’re challenge is going to take place on <%= @challenge.play_date.to_formatted_s(:long) %>.
