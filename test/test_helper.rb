@@ -22,7 +22,7 @@ class ActiveSupport::TestCase
   end
 
   def create_challenge!
-    make_sure_at_least_n_users_exist(2)
+    make_sure_at_least_n_users_exist!(2)
     Challenge.create(
       challenging_player: User.first, 
       challenged_player: User.last,
