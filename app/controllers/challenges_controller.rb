@@ -38,6 +38,20 @@ class ChallengesController < ApplicationController
     end
   end
 
+  def deny
+    needs_comment = current_user.needs_comment?
+    c = Challenge.find(params[:id])
+    comment = params[:comment]
+    redirect_to root_path, alert: "You need to provide a comment." if needs_comment && (comment.nil? || comment.length < 1)
+    unless needs_comment
+      c.update_attribute(state: 'denied')
+      redirect_to root_path, notice: "Challenge has been denied."
+    else
+      c.update_attributes(state: 'challenged', comment: comment)
+      redirect_to root_path, notice: "An Admin will check your reason for denial."
+    end
+  end
+
   def pick_winner
     usr = User.find params[:winner_id]
     c = Challenge.find params[:id]
