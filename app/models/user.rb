@@ -69,6 +69,7 @@ class User
   end
 
   def update_rank_to(new_rank)
+    #FIXME without sorting
     User.all.asc(:rank)[new_rank-1..rank-2].each do |standing|
       standing.rank -=1
       standing.save
@@ -82,6 +83,7 @@ class User
 
     # Upping rank of each active player
     active_users = User.where(active: true)
+    #FIXME without sorting
     active_users.asc(:rank)[rank..active_users.size-1].each do |player|
       player.rank -= 1
       player.save
@@ -91,7 +93,8 @@ class User
   # Method to insert player to specific position e.g. after deneutralization
   def deneutralize_to(target)
     active_users = User.where(active: true)
-    active_users.asc(:rank)[target-1..active_users.size-1].each do |player|
+    #FIXME without sorting
+    active_users.asc(:rank)[target-1..active_users.size-1].each do |player| 
       player.rank += 1
       player.save
     end
