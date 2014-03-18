@@ -23,11 +23,14 @@ class ActiveSupport::TestCase
 
   def create_challenge!
     make_sure_at_least_n_users_exist!(2)
-    Challenge.create(
+
+    Challenge.create!(
       challenging_player: User.first, 
       challenged_player: User.last,
       location: "Foo",
-      suggestions: 3.times.map{ |i| Time.now + (i+1).days }
+      suggestions: 3.times.map{ |i| Time.now + (i+1).days },
+      state: 'created',
+      due_date: (Time.now + 14.days).to_date
     )
   end
 end
