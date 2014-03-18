@@ -1,4 +1,9 @@
 class ChallengesController < ApplicationController
+  def index
+    @challenges = Challenge.active_challenges
+    @history = Challenge.history
+  end
+
   def new
     @challenge = Challenge.new(
         challenging_player: current_user,

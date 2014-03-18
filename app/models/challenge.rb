@@ -22,7 +22,7 @@ class Challenge
   validate :using_different_dates, :dates_in_next_two_weeks, :all_dates_in_future
 
   def active?
-    state.in? [:created, :accepted, :challenged]
+    state.in? ['created', 'accepted', 'challenged']
   end
 
   def set_winner(usr)
@@ -59,4 +59,15 @@ class Challenge
     criteria
   end
 
+  def self.challenged_challenges
+    Challenge.where(state: 'challenged')
+  end
+
+  def self.active_challenges
+    Challenge.any_of({state: 'created'}, {state: 'accepted'}, {state: 'challenged'})
+  end
+
+  def self.history
+    Challenge.where(state: 'finished')
+  end
 end

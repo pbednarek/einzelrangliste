@@ -1,25 +1,9 @@
-<h1>Listing challenges</h1>
+<h1>Active Challenges</h1>
+<ul>
+  <%= render @challenges %>
+</ul>
 
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @challenges.each do |challenge| %>
-      <tr>
-        <td><%= link_to 'Show', challenge %></td>
-        <td><%= link_to 'Edit', edit_challenge_path(challenge) %></td>
-        <td><%= link_to 'Destroy', challenge, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Challenge', new_challenge_path %>
+<h2>Challenge History</h2>
+<ul>
+  <%= render @history %>
+</ul>

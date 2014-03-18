@@ -107,6 +107,10 @@ class User
     self.save
   end
 
+  def to_s
+    name
+  end
+
   protected
   def set_initial_rank
     user = User.all.desc(:rank).first
