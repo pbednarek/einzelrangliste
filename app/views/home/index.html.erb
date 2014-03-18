@@ -43,7 +43,7 @@
                   <% end %>
               <% end %>
           <% elsif @challenge.state == "accepted" %>
-              You’re challenge is going to take place on <%= @challenge.play_date.to_formatted_s(:long) %>.
+              Your challenge is going to take place on <%= @challenge.play_date.to_formatted_s(:long) %>.
           <% elsif @challenge.state == "challenged" %>
               You denied your Challenge. An Admin is checking your reason
           <% end %>
