@@ -9,7 +9,7 @@
     <%= challenge.comment %>
   </p>
   <p>
-    <%= link_to 'Accept Reason', accept_reason_path, method: :post, class: 'button', challenge_id: challenge.id %>
+    <%= link_to 'Accept Reason', accept_reason_path,  class: 'button', challenge_id: challenge.id %>
     <%= link_to 'Deny Reason', deny_reason_path, method: :post, class: 'button alert', challenge_id: challenge.id %>
   </p>
 </li>
