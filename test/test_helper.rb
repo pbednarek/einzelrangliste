@@ -25,8 +25,8 @@ class ActiveSupport::TestCase
     make_sure_at_least_n_users_exist!(2)
 
     Challenge.create!(
-      challenging_player: User.first, 
-      challenged_player: User.last,
+      challenged_player: User.first, 
+      challenging_player: User.last,
       location: "Foo",
       suggestions: 3.times.map{ |i| Time.now + (i+1).days },
       state: 'created',
