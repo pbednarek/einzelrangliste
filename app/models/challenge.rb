@@ -27,15 +27,13 @@ class Challenge
 
   def set_winner(usr)
     update_attributes(state: 'finished', winner: usr)
-    usr.wins += 1
+    usr.update_attributes(wins: usr.wins+1)
     if challenged_player.equal?(usr)
-      challenging_player.losses += 1
+      challenging_player.update_attributes(losses: challenging_player.losses+1)
     elsif challenging_player.equal?(usr)
-      challenged_player.losses += 1
+      challenged_player.update_attributes(losses: challenged_player.losses+1)
       usr.update_rank_to challenged_player.rank
     end
-    challenged_player.save
-    challenging_player.save
   end
 
   # Validation Methods
