@@ -19,7 +19,7 @@ class Challenge
 
   validates_presence_of :suggestions, :due_date, :location, :state, :challenging_player, :challenged_player
   validates_inclusion_of :state, in: VALID_STATES
-  validate :using_different_dates, :dates_in_next_two_weeks, :all_dates_in_future
+  validate :using_different_dates, :dates_in_next_two_weeks, :all_dates_in_future, on: :create
 
   def active?
     state.in? ['created', 'accepted', 'challenged']
