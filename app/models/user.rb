@@ -44,6 +44,7 @@ class User
 
   has_many :own_challenges, class_name: 'Challenge', inverse_of: :challenging_player
   has_many :foreign_challenges, class_name: 'Challenge', inverse_of: :challenged_player
+  has_many :won_challenges, class_name: 'Challenge', inverse_of: :winner
 
   validates_presence_of :name
   before_create :set_initial_rank

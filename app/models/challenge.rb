@@ -7,7 +7,7 @@ class Challenge
   belongs_to :challenging_player, inverse_of: :own_challenges, class_name: 'User', autosave: true
   belongs_to :challenged_player, inverse_of: :foreign_challenges, class_name: 'User', autosave: true
 
-  field :winner, type: User
+  belongs_to :winner, class_name: 'User', inverse_of: :won_challenges
 
   field :suggestions, type: Array
   field :due_date, type: Date
@@ -19,7 +19,7 @@ class Challenge
 
   validates_presence_of :suggestions, :due_date, :location, :state, :challenging_player, :challenged_player
   validates_inclusion_of :state, in: VALID_STATES
-  validate :using_different_dates, :dates_in_next_two_weeks, :all_dates_in_future, on: :create
+  validate :using_different_dates, :dates_in_next_two_weeks, :all_dates_in_future
 
   def active?
     state.in? ['created', 'accepted', 'challenged']
@@ -28,7 +28,12 @@ class Challenge
   def set_winner(usr)
     update_attributes(state: 'finished', winner: usr)
     usr.wins += 1
-    challenged_player.equal?(usr) ? challenging_player.losses += 1 : challenged_player.losses += 1
+    if challenged_player.equal?(usr)
+      challenging_player.losses += 1
+    elsif challenging_player.equal?(usr)
+      challenged_player.losses += 1
+      usr.update_rank_to challenged_player.rank
+    end
     challenged_player.save
     challenging_player.save
   end
@@ -54,9 +59,7 @@ class Challenge
 
   # static methods
   def self.with_participation_of(user)
-    criteria = any_of({challenging_player: user}, {challenged_player: user})
-    criteria = criteria.any_of({state: :created}, {state: :accepted}, {state: :challenged})
-    criteria
+    any_of({challenging_player: user}, {challenged_player: user}).select(&:active?)
   end
 
   def self.challenged_challenges

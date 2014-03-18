@@ -34,7 +34,7 @@ class ChallengesController < ApplicationController
     c = Challenge.find params[:id]
     accepted_date = params[:accepted_date]
 
-    if accepted_date < Date.now
+    if Date.parse(accepted_date) < Date.today
       redirect_to root_path, alert: "Please pick a date in the future"
     end
 
@@ -63,6 +63,7 @@ class ChallengesController < ApplicationController
     usr = User.find params[:winner_id]
     c = Challenge.find params[:id]
     c.set_winner usr
+    redirect_to root_path, notice: "The winner has been set."
   end
 
   protected
