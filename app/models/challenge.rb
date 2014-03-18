@@ -28,9 +28,9 @@ class Challenge
   def set_winner(usr)
     update_attributes(state: 'finished', winner: usr)
     usr.update_attributes(wins: usr.wins+1)
-    if challenged_player.equal?(usr)
+    if challenged_player == usr
       challenging_player.update_attributes(losses: challenging_player.losses+1)
-    elsif challenging_player.equal?(usr)
+    elsif challenging_player == usr
       challenged_player.update_attributes(losses: challenged_player.losses+1)
       usr.update_rank_to challenged_player.rank
     end
