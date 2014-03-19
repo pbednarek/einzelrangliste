@@ -90,7 +90,7 @@ class User
   end
 
   def needs_comment?
-    !Challenge.where(challenged_player_id: self.id).where(winner_id: self.id).any? { |chlng| (Date.today-2.days..Date.today).include? chlng.play_date }
+    !Challenge.where(challenged_player_id: self.id).where(winner_id: self.id).any? { |chlng| (Date.today-2.days..Date.today).include? chlng.play_date.to_date }
   end
 
   # Method to insert player to specific position e.g. after deneutralization

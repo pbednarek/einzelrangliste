@@ -51,7 +51,7 @@ class ChallengesController < ApplicationController
     comment = params[:comment]
     redirect_to root_path, alert: "You need to provide a comment." if needs_comment && (comment.nil? || comment.length < 1)
     unless needs_comment
-      c.update_attribute(state: 'denied')
+      c.update_attributes(state: 'denied')
       redirect_to root_path, notice: "Challenge has been denied."
     else
       c.update_attributes(state: 'challenged', comment: comment)
