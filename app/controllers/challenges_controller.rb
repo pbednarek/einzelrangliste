@@ -16,18 +16,20 @@ class ChallengesController < ApplicationController
 
   def create
     p = params[:challenge]
-    challenge = Challenge.new
-    challenge.challenged_player_id = p[:challenged_player_id]
-    challenge.challenging_player = current_user
-    challenge.suggestions = p[:suggestions].map do |suggestion|
+    @challenge = Challenge.new
+    @challenge.challenged_player_id = p[:challenged_player_id]
+    @challenge.challenging_player = current_user
+    @challenge.suggestions = p[:suggestions].map do |suggestion|
       create_date_time suggestion[:date], suggestion[:time]
     end
-    challenge.location = p[:location]
-    challenge.state = 'created'
-    challenge.due_date = (Time.now+14.days).to_date
-    puts challenge.to_json
-    challenge.save!
-    redirect_to root_path
+    @challenge.location = p[:location]
+    @challenge.state = 'created'
+    @challenge.due_date = (Time.now+14.days).to_date
+    if @challenge.save
+      redirect_to root_path, notice: "Challenge has been created"
+    else
+      render action: 'new'
+    end
   end
 
   def accept
