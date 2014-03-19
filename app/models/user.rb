@@ -41,6 +41,7 @@ class User
   field :rank, type: Integer
   field :admin, type: Boolean, default: false
   field :active, type: Boolean, default: true
+  field :inactive_until, type: Date
 
   has_many :own_challenges, class_name: 'Challenge', inverse_of: :challenging_player
   has_many :foreign_challenges, class_name: 'Challenge', inverse_of: :challenged_player
@@ -77,7 +78,7 @@ class User
     update_attributes(rank: new_rank)
   end
 
-  def neutralize
+  def neutralize(end_date)
     # Upping rank of each active player
     active_users = User.where(active: true)
     active_users.where(rank: rank+1..active_users.size).each do |player|
@@ -85,7 +86,7 @@ class User
       player.save
     end
 
-    update_attributes(active: false)
+    update_attributes(active: false, inactive_until: end_date)
   end
 
   def needs_comment?
@@ -99,7 +100,7 @@ class User
       player.rank += 1
       player.save
     end
-    update_attributes(rank: target, active: true)
+    update_attributes(rank: target, active: true, inactive_until: nil)
   end
 
   def to_s
